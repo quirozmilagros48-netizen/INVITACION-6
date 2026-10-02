@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis 15 Años - Graciela</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#fff}
+body{font-family:Georgia,serif;overflow-x:hidden}
+.page{display:none;min-height:100vh;align-items:center;justify-content:center;background:#fff}
+.page.active{display:flex}
+
+/* PÁGINA 1 — SOBRE */
+#page1{position:fixed;inset:0;z-index:20}
+.art{position:relative;width:min(100vw,1240px)}
+.art img{display:block;width:100%;height:auto}
+.btn{
+ position:absolute;border:0;cursor:pointer;background:#b75a48;color:#fff;
+ border-radius:30px;font-family:Georgia,serif;box-shadow:0 4px 12px rgba(80,40,30,.18);
+ z-index:5
+}
+#abrir{left:50%;bottom:10.5%;transform:translateX(-50%);padding:13px 30px;font-size:16px}
+
+/* PÁGINA 2 */
+#page2{padding:0}
+.page2art{position:relative;width:min(100vw,627px)}
+#ver{left:42.5%;top:86.2%;padding:0;width:15%;height:7%;background:transparent;box-shadow:none}
+
+/* PÁGINA 3 — UNA SOLA IMAGEN LARGA, CON SCROLL */
+#page3{display:none;align-items:flex-start;justify-content:center;min-height:0}
+#page3.active{display:flex}
+.page3art{position:relative;width:min(100vw,910px);line-height:0}
+.page3art>img{display:block;width:100%;height:auto}
+
+/* Botón de música: sobre el botón ▶ de la imagen */
+#musicaBtn{
+ left:40.5%;top:4.05%;width:19%;height:5.2%;
+ background:transparent;box-shadow:none;border-radius:50%;
+ padding:0
+}
+#musicaEstado{
+ position:absolute;left:33%;top:9.7%;width:34%;line-height:1.2;
+ text-align:center;font:10px Arial,sans-serif;color:#8f6b67;
+ pointer-events:none;z-index:4
+}
+
+/* Ubicación */
+#ubicacionBtn{
+ left:40%;top:57.4%;width:20%;height:3.2%;
+ background:transparent;box-shadow:none;padding:0
+}
+
+/* Confirmación WhatsApp */
+#confirmarBtn{
+ left:57%;top:93.2%;width:31%;height:3.3%;
+ background:transparent;box-shadow:none;padding:0
+}
+audio{display:none}
+
+/* Mejor adaptación en teléfonos sin cambiar proporción */
+@media(max-width:600px){
+ .art,.page2art,.page3art{width:100%}
+ #abrir{font-size:14px;padding:11px 25px}
+}
+</style>
+</head>
+<body>
+
+<!-- 1. SOBRE -->
+<section id="page1" class="page active">
+  <div class="art">
+    <img src="sobre.png" alt="Sobre de los 15 años de Graciela">
+    <button id="abrir" class="btn" type="button">Abrir invitación</button>
+  </div>
+</section>
+
+<!-- 2. PÁGINA INTERMEDIA -->
+<section id="page2" class="page">
+  <div class="page2art">
+    <img src="pagina2.png" alt="Portada de los 15 años de Graciela">
+    <button id="ver" class="btn" type="button" aria-label="Ver invitación"></button>
+  </div>
+</section>
+
+<!-- 3. PÁGINA FINAL, LARGA Y CON SCROLL -->
+<section id="page3" class="page">
+  <div class="page3art">
+    <img src="pagina3.png" alt="Invitación completa de los 15 años de Graciela">
+
+    <button id="musicaBtn" class="btn" type="button" aria-label="Reproducir o pausar música"></button>
+    <div id="musicaEstado">Toca ▶ para reproducir</div>
+
+    <a id="ubicacionBtn" class="btn"
+       href="https://www.google.com/maps/search/?api=1&query=Salones+Roma+Cajamarca"
+       target="_blank" rel="noopener" aria-label="Ver ubicación"></a>
+
+    <a id="confirmarBtn" class="btn"
+       href="https://api.whatsapp.com/send?phone=51952388205&text=Hola%2C%20Soy....%20confirmo%20mi%20asistencia%20para%20el%2015%20a%C3%B1os%20de%20Graciela."
+       target="_blank" rel="noopener" aria-label="Confirmar asistencia por WhatsApp"></a>
+  </div>
+</section>
+
+<audio id="musica" preload="auto" loop>
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const page1=document.getElementById('page1');
+const page2=document.getElementById('page2');
+const page3=document.getElementById('page3');
+
+function mostrar(pagina){
+  page1.classList.remove('active');
+  page2.classList.remove('active');
+  page3.classList.remove('active');
+  pagina.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+document.getElementById('abrir').addEventListener('click',()=>mostrar(page2));
+document.getElementById('ver').addEventListener('click',()=>mostrar(page3));
+
+const audio=document.getElementById('musica');
+const estado=document.getElementById('musicaEstado');
+document.getElementById('musicaBtn').addEventListener('click',async()=>{
+  if(audio.paused){
+    try{
+      await audio.play();
+      estado.textContent='♫ Reproduciendo';
+    }catch(e){
+      estado.textContent='No se pudo reproducir';
+    }
+  }else{
+    audio.pause();
+    estado.textContent='Toca ▶ para reproducir';
+  }
+});
+</script>
+</body>
+</html>
